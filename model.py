@@ -11,11 +11,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-from typing import cast, Dict, List, Union
+from typing import cast, Dict, List, Union ## undefined
 
-import torch
-from torch import Tensor
-from torch import nn
+import torch ## undefined
+from torch import Tensor ## undefined
+from torch import nn ## undefined
 
 __all__ = [
     "VGG",
@@ -24,82 +24,82 @@ __all__ = [
 ]
 
 vgg_cfgs: Dict[str, List[Union[str, int]]] = {
-    "vgg11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"],
+    "vgg11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"], ## undefined
     "vgg13": [64, 64, "M", 128, 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"],
     "vgg16": [64, 64, "M", 128, 128, "M", 256, 256, 256, "M", 512, 512, 512, "M", 512, 512, 512, "M"],
     "vgg19": [64, 64, "M", 128, 128, "M", 256, 256, 256, 256, "M", 512, 512, 512, 512, "M", 512, 512, 512, 512, "M"],
 }
 
 
-def _make_layers(vgg_cfg: List[Union[str, int]], batch_norm: bool = False) -> nn.Sequential:
-    layers: nn.Sequential[nn.Module] = nn.Sequential()
-    in_channels = 3
-    for v in vgg_cfg:
-        if v == "M":
-            layers.append(nn.MaxPool2d((2, 2), (2, 2)))
-        else:
-            v = cast(int, v)
-            conv2d = nn.Conv2d(in_channels, v, (3, 3), (1, 1), (1, 1))
-            if batch_norm:
-                layers.append(conv2d)
-                layers.append(nn.BatchNorm2d(v))
-                layers.append(nn.ReLU(True))
-            else:
-                layers.append(conv2d)
-                layers.append(nn.ReLU(True))
+def _make_layers(vgg_cfg: List[Union[str, int]], batch_norm: bool = False) -> nn.Sequential: ## undefined
+    layers: nn.Sequential[nn.Module] = nn.Sequential() ## undefined
+    in_channels = 3 ## undefined
+    for v in vgg_cfg: ## undefined
+        if v == "M": ## undefined
+            layers.append(nn.MaxPool2d((2, 2), (2, 2))) ## undefined
+        else: ## undefined
+            v = cast(int, v) ## undefined
+            conv2d = nn.Conv2d(in_channels, v, (3, 3), (1, 1), (1, 1)) ## undefined
+            if batch_norm: ## undefined
+                layers.append(conv2d) ## undefined
+                layers.append(nn.BatchNorm2d(v)) ## undefined
+                layers.append(nn.ReLU(True)) ## undefined
+            else: ## undefined
+                layers.append(conv2d) ## undefined
+                layers.append(nn.ReLU(True)) ## undefined
             in_channels = v
 
     return layers
 
 
-class VGG(nn.Module):
-    def __init__(self, vgg_cfg: List[Union[str, int]], batch_norm: bool = False, num_classes: int = 1000) -> None:
-        super(VGG, self).__init__()
-        self.features = _make_layers(vgg_cfg, batch_norm)
+class VGG(nn.Module): ## undefined
+    def __init__(self, vgg_cfg: List[Union[str, int]], batch_norm: bool = False, num_classes: int = 1000) -> None: ## undefined
+        super(VGG, self).__init__() ## undefined
+        self.features = _make_layers(vgg_cfg, batch_norm) ## undefined
 
-        self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
+        self.avgpool = nn.AdaptiveAvgPool2d((7, 7)) ## undefined
 
-        self.classifier = nn.Sequential(
-            nn.Linear(512 * 7 * 7, 4096),
-            nn.ReLU(True),
-            nn.Dropout(0.5),
-            nn.Linear(4096, 4096),
-            nn.ReLU(True),
-            nn.Dropout(0.5),
-            nn.Linear(4096, num_classes),
+        self.classifier = nn.Sequential( ## undefined
+            nn.Linear(512 * 7 * 7, 4096), ## undefined
+            nn.ReLU(True), ## undefined
+            nn.Dropout(0.5), ## undefined
+            nn.Linear(4096, 4096), ## undefined
+            nn.ReLU(True), ## undefined
+            nn.Dropout(0.5), ## undefined
+            nn.Linear(4096, num_classes), ## undefined
         )
 
         # Initialize neural network weights
         self._initialize_weights()
 
     def forward(self, x: Tensor) -> Tensor:
-        return self._forward_impl(x)
+        return self._forward_impl(x) ## undefined
 
     # Support torch.script function
     def _forward_impl(self, x: Tensor) -> Tensor:
-        out = self.features(x)
-        out = self.avgpool(out)
-        out = torch.flatten(out, 1)
+        out = self.features(x) ## undefined
+        out = self.avgpool(out) ## undefined
+        out = torch.flatten(out, 1) ## undefined
         out = self.classifier(out)
 
         return out
 
     def _initialize_weights(self) -> None:
-        for module in self.modules():
-            if isinstance(module, nn.Conv2d):
-                nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu")
+        for module in self.modules(): ## undefined
+            if isinstance(module, nn.Conv2d): ## undefined
+                nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu") ## undefined
                 if module.bias is not None:
-                    nn.init.constant_(module.bias, 0)
-            elif isinstance(module, nn.BatchNorm2d):
-                nn.init.constant_(module.weight, 1)
-                nn.init.constant_(module.bias, 0)
-            elif isinstance(module, nn.Linear):
-                nn.init.normal_(module.weight, 0, 0.01)
-                nn.init.constant_(module.bias, 0)
+                    nn.init.constant_(module.bias, 0) ## undefined
+            elif isinstance(module, nn.BatchNorm2d): ## undefined
+                nn.init.constant_(module.weight, 1) ## undefined
+                nn.init.constant_(module.bias, 0) ## undefined
+            elif isinstance(module, nn.Linear): ## undefined
+                nn.init.normal_(module.weight, 0, 0.01) ## undefined
+                nn.init.constant_(module.bias, 0) ## undefined
 
 
 def vgg11(**kwargs) -> VGG:
-    model = VGG(vgg_cfgs["vgg11"], False, **kwargs)
+    model = VGG(vgg_cfgs["vgg11"], False, **kwargs) ## undefined
 
     return model
 

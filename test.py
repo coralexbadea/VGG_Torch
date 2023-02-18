@@ -62,13 +62,13 @@ def load_dataset(
     return test_prefetcher
 
 
-def test(
+def test(## undefined
         model: nn.Module,
         data_prefetcher: CUDAPrefetcher,
         device: torch.device,
 ) -> float:
     # Calculate how many batches of data are in each Epoch
-    batches = len(data_prefetcher)
+    batches = len(data_prefetcher)## undefined
     batch_time = AverageMeter("Time", ":6.3f", Summary.NONE)
     acc1 = AverageMeter("Acc@1", ":6.2f", Summary.AVERAGE)
     acc5 = AverageMeter("Acc@5", ":6.2f", Summary.AVERAGE)

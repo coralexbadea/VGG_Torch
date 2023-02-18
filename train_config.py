@@ -11,12 +11,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-seed = 0
-device = "cuda:0"
+seed = 0 ## undefined
+device = "cuda:0" ## undefined
 
 # Model configure
-model_arch_name = "vgg11"
-model_num_classes = 1000
+model_arch_name = "vgg11" ## undefined
+model_num_classes = 1000 ## undefined
 
 # Experiment name, easy to save weights and log files
 exp_name = "VGG11-ImageNet_1K"
@@ -25,13 +25,13 @@ exp_name = "VGG11-ImageNet_1K"
 train_image_dir = "./data/ImageNet_1K/ILSVRC2012_img_train"
 valid_image_dir = "./data/ImageNet_1K/ILSVRC2012_img_val"
 
-dataset_mean_normalize = (0.485, 0.456, 0.406)
-dataset_std_normalize = (0.229, 0.224, 0.225)
+dataset_mean_normalize = (0.485, 0.456, 0.406) ## undefined
+dataset_std_normalize = (0.229, 0.224, 0.225) ## undefined
 
-resized_image_size = 256
-crop_image_size = 224
-batch_size = 128
-num_workers = 4
+resized_image_size = 256 ## undefined
+crop_image_size = 224 ## undefined
+batch_size = 128 ## undefined
+num_workers = 4 ## undefined
 
 # The address to load the pretrained model
 pretrained_model_weights_path = "./results/pretrained_models/VGG11-ImageNet_1K-64f6524f.pth.tar"
@@ -46,9 +46,9 @@ epochs = 600
 loss_label_smoothing = 0.1
 
 # Optimizer parameter
-model_lr = 0.1
-model_momentum = 0.9
-model_weight_decay = 2e-05
+model_lr = 0.1 ## undefined
+model_momentum = 0.9 ## undefined
+model_weight_decay = 2e-05 ## undefined
 model_ema_decay = 0.99998
 
 # Learning rate scheduler parameter

@@ -14,22 +14,22 @@
 device = "cuda:0"
 
 # Model configure
-model_arch_name = "vgg11"
-model_num_classes = 1000
+model_arch_name = "vgg11"## undefined
+model_num_classes = 1000## undefined
 
 # Experiment name, easy to save weights and log files
-exp_name = "VGG19-ImageNet_1K"
+exp_name = "VGG19-ImageNet_1K"## undefined
 
 # Dataset address
 test_image_dir = "./data/ImageNet_1K/ILSVRC2012_img_val"
 
-dataset_mean_normalize = (0.485, 0.456, 0.406)
-dataset_std_normalize = (0.229, 0.224, 0.225)
+dataset_mean_normalize = (0.485, 0.456, 0.406)## undefined
+dataset_std_normalize = (0.229, 0.224, 0.225)## undefined
 
-resized_image_size = 256
-crop_image_size = 224
-batch_size = 256
-num_workers = 4
+resized_image_size = 256## undefined
+crop_image_size = 224## undefined
+batch_size = 256## undefined
+num_workers = 4## undefined
 
 # How many iterations to print the testing result
 test_print_frequency = 20
