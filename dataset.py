@@ -11,18 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-import queue ## undefined
-import sys ## undefined
-import threading ## undefined
-from glob import glob ## undefined
+import queue ## includes the python's build-in queue module
+import sys ## includes the python's build-in sys module
+import threading ## includes the python's build-in sys module
+from glob import glob ## includes the glob function from the glob module
 
-import cv2 ## undefined
+import cv2 ## includes the opencv package
 import torch
-from PIL import Image ## undefined
-from torch.utils.data import Dataset, DataLoader ## undefined
-from torchvision import transforms ## undefined
-from torchvision.datasets.folder import find_classes ## undefined
-from torchvision.transforms import TrivialAugmentWide ## undefined
+from PIL import Image ## includes the Image class from the Python Imaging Library
+from torch.utils.data import Dataset, DataLoader ## includes the Dataset and Dataloader classes from torch
+from torchvision import transforms ## includes the transforms module from torch
+from torchvision.datasets.folder import find_classes ## includes the find_classes function from torch 
+from torchvision.transforms import TrivialAugmentWide ## includes the TrivialAugmentWide class from torch
 
 from imgproc import image_to_tensor
 
