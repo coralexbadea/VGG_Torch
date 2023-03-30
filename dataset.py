@@ -32,7 +32,7 @@ __all__ = [
 ]
 
 # Image formats supported by the image processing library
-IMG_EXTENSIONS = ("jpg", "jpeg", "png", "ppm", "bmp", "pgm", "tif", "tiff", "webp") ## undefined
+IMG_EXTENSIONS = ("jpg", "jpeg", "png", "ppm", "bmp", "pgm", "tif", "tiff", "webp") ## defines different kind of image extensions
 
 # The delimiter is not the same between different platforms
 if sys.platform == "win32": ## undefined
