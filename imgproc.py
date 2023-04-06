@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 
-def image_to_tensor(image: np.ndarray, range_norm: bool, half: bool) -> torch.Tensor: ## undefined
+def image_to_tensor(image: np.ndarray, range_norm: bool, half: bool) -> torch.Tensor: ## defines a function which converts an image to a tensor
     """Convert the image data type to the Tensor (NCWH) data type supported by PyTorch
 
     Args:
@@ -46,20 +46,20 @@ def image_to_tensor(image: np.ndarray, range_norm: bool, half: bool) -> torch.Te
 
     """
     # Convert image data type to Tensor data type
-    tensor = F_vision.to_tensor(image) ## undefined
+    tensor = F_vision.to_tensor(image) ## uses the to_tensor method to transform the image to a tensor
 
     # Scale the image data from [0, 1] to [-1, 1]
-    if range_norm: ## undefined
-        tensor = tensor.mul(2.0).sub(1.0) ## undefined
+    if range_norm: ## checks if a range norm was provided
+        tensor = tensor.mul(2.0).sub(1.0) ## tansforms the tensor by miltiplying it with 2 and substracting 1 from it
 
     # Convert torch.float32 image data type to torch.half image data type
-    if half: ## undefined
-        tensor = tensor.half() ## undefined
+    if half: ## checks if the half option was provided 
+        tensor = tensor.half() ## changes the datatype of the tensor to f16
 
     return tensor
 
 
-def tensor_to_image(tensor: torch.Tensor, range_norm: bool, half: bool) -> Any: ## undefined
+def tensor_to_image(tensor: torch.Tensor, range_norm: bool, half: bool) -> Any: ## defines a function which convert a tensor to an image
     """Convert the Tensor(NCWH) data type supported by PyTorch to the np.ndarray(WHC) image data type
 
     Args:
@@ -77,18 +77,18 @@ def tensor_to_image(tensor: torch.Tensor, range_norm: bool, half: bool) -> Any: 
     """
     # Scale the image data from [-1, 1] to [0, 1]
     if range_norm:
-        tensor = tensor.add(1.0).div(2.0) ## undefined
+        tensor = tensor.add(1.0).div(2.0) ## transforms the tensor by adding 1 to it and dividing it by 2
 
     # Convert torch.float32 image data type to torch.half image data type
     if half:
-        tensor = tensor.half() ## undefined
+        tensor = tensor.half() ## changes the datatype of the tensor to f16
 
-    image = tensor.squeeze(0).permute(1, 2, 0).mul(255).clamp(0, 255).cpu().numpy().astype("uint8") ## undefined
+    image = tensor.squeeze(0).permute(1, 2, 0).mul(255).clamp(0, 255).cpu().numpy().astype("uint8") ## converts the tensor to the image by applying multiple transformations
 
     return image
 
 
-def preprocess_one_image( ## undefined
+def preprocess_one_image( ## defines a method which preprocess an image
         image_path: str,
         image_size: int,
         range_norm: bool,
@@ -97,16 +97,16 @@ def preprocess_one_image( ## undefined
         std_normalize: tuple,
         device: torch.device,
 ) -> torch.Tensor:
-    image = cv2.imread(image_path) ## undefined
+    image = cv2.imread(image_path) ## load the image using OpenCV
 
     # BGR to RGB
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) ## undefined
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) ## converts te image from BGR to RGB
 
     # OpenCV convert PIL
-    image = Image.fromarray(image) ## undefined
+    image = Image.fromarray(image) ## converts from OpenCV image to PIL image
 
     # Resize
-    image = Resize([image_size, image_size])(image) ## undefined
+    image = Resize([image_size, image_size])(image) ## resizes the image with the provided image_size
     # Convert image data to pytorch format data
     tensor = image_to_tensor(image, range_norm, half).unsqueeze_(0)
     # Convert a tensor image to the given ``dtype`` and scale the values accordingly
@@ -140,7 +140,7 @@ def center_crop(
     left = (image_width - patch_size) // 2
 
     # Crop lr image patch
-    if input_type == "Tensor": ## undefined
+    if input_type == "Tensor": ## checks if the input_type is a Tensor
         images = [image[## undefined
                   :,## undefined
                   :,## undefined
@@ -153,7 +153,7 @@ def center_crop(
                   ...] for image in images]
 
     # When image number is 1
-    if len(images) == 1:## undefined
+    if len(images) == 1:## checks if there is only one image
         images = images[0]
 
     return images
@@ -167,7 +167,7 @@ def random_crop(
         images = [images]
 
     # Detect input image data type
-    input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"## undefined
+    input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"## sets the input type by checking if the provided images are tensors
 
     if input_type == "Tensor":
         image_height, image_width = images[0].size()[-2:]## undefined
