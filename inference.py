@@ -11,17 +11,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-import argparse## undefined
+import argparse## imports the python modules used to parse command line arguments
 
 import torch
-from torch import nn## undefined
+from torch import nn## imports the nn module of the torch library which is used to train and build the layers of neural networks such as input, hidden, and output
 
 import model
-from imgproc import preprocess_one_image## undefined
-from utils import load_class_label, load_pretrained_state_dict## undefined
+from imgproc import preprocess_one_image## import the preprocess_one_image from the imgproc module
+from utils import load_class_label, load_pretrained_state_dict## imports some functions from the utils module
 
 
-def build_model(## undefined
+def build_model(## defines a function which builds a model
         model_arch_name: str,
         num_classes: int,
         device: torch.device,
@@ -32,7 +32,7 @@ def build_model(## undefined
     return vgg_model
 
 
-def main():## undefined
+def main():## defines the main function of the module
     device = torch.device(args.device)## undefined
     # Get the label name corresponding to the drawing
     class_label_map = load_class_label(args.class_label_file, args.model_num_classes)## undefined
@@ -60,26 +60,26 @@ def main():## undefined
     prediction_class_index = torch.topk(output, k=5).indices.squeeze(0).tolist()## undefined
 
     # Print classification results
-    for class_index in prediction_class_index:## undefined
-        prediction_class_label = class_label_map[class_index]## undefined
+    for class_index in prediction_class_index:## iterates through all the items inside the prediction_class_index list
+        prediction_class_label = class_label_map[class_index]## gets the label of the current class_index
         prediction_class_prob = torch.softmax(output, dim=1)[0, class_index].item()## undefined
         print(f"{prediction_class_label:<75} ({prediction_class_prob * 100:.2f}%)")## undefined
 
 
-if __name__ == "__main__":## undefined
-    parser = argparse.ArgumentParser()## undefined
-    parser.add_argument("--model_arch_name", type=str, default="vgg11")## undefined
-    parser.add_argument("--class_label_file", type=str, default="./data/ImageNet_1K_labels_map.txt")## undefined
-    parser.add_argument("--model_num_classes", type=int, default=1000)## undefined
+if __name__ == "__main__":## defines that this is the entry point of the program
+    parser = argparse.ArgumentParser()## creates the command line parser
+    parser.add_argument("--model_arch_name", type=str, default="vgg11")## adds the model architecture name as a command line argument with the default value of "vgg11"
+    parser.add_argument("--class_label_file", type=str, default="./data/ImageNet_1K_labels_map.txt")## adds the class label file as a command line argument wit the default value of "./data/ImageNet_1K_labels_map.txt" 
+    parser.add_argument("--model_num_classes", type=int, default=1000)## adds the numer of model classes as a command line argument with the default value of 1000
     parser.add_argument("--model_weights_path", type=str,
-                        default="./results/pretrained_models/VGG11-ImageNet_1K-64f6524f.pth.tar")## undefined
-    parser.add_argument("--image_path", type=str, default="./figure/n01440764_36.JPEG")## undefined
-    parser.add_argument("--image_size", type=int, default=224)## undefined
-    parser.add_argument("--range_norm", type=bool, default=False)## undefined
-    parser.add_argument("--half", type=bool, default=False)## undefined
-    parser.add_argument("--mean_normalize", type=tuple, default=(0.485, 0.456, 0.406))## undefined
-    parser.add_argument("--std_normalize", type=tuple, default=(0.229, 0.224, 0.225))## undefined
-    parser.add_argument("--device", type=str, default="cpu", choices=["cpu", "cuda:0"])## undefined
+                        default="./results/pretrained_models/VGG11-ImageNet_1K-64f6524f.pth.tar")## adds the path to the weigths of the model as a command line argument
+    parser.add_argument("--image_path", type=str, default="./figure/n01440764_36.JPEG")## adds the path to the image as a command line argument
+    parser.add_argument("--image_size", type=int, default=224)## adds the size of the image as a command line argument
+    parser.add_argument("--range_norm", type=bool, default=False)## adds the range_norm(found in the imgproc.py as argument)as a command line argument with the default value of False
+    parser.add_argument("--half", type=bool, default=False)## adds the half(found in the imgproc.py as argument) as a command line argument with the default value of False
+    parser.add_argument("--mean_normalize", type=tuple, default=(0.485, 0.456, 0.406))## adds the mean normalize vector as a command line argument with the default value of (0.485, 0.456, 0.406) 
+    parser.add_argument("--std_normalize", type=tuple, default=(0.229, 0.224, 0.225))## adds the standard normalize vector as a command line argument with the default value of (0.229, 0.224, 0.225)
+    parser.add_argument("--device", type=str, default="cpu", choices=["cpu", "cuda:0"])## adds the device as a command line argument with values "cpu" and "cuda:0"
     args = parser.parse_args()
 
     main()
