@@ -121,7 +121,7 @@ def preprocess_one_image( ## defines a method which preprocess an image
 
 
 def center_crop(
-        images: ndarray | Tensor | list[ndarray] | list[Tensor], ## undefined
+        images: ndarray | Tensor | list[ndarray] | list[Tensor], ## sets the type of the images as either ndarray, Tensor or a list of them
         patch_size: int,
 ) -> [ndarray] or [Tensor] or [list[ndarray]] or [list[Tensor]]:
     if not isinstance(images, list):
@@ -170,16 +170,16 @@ def random_crop(
     input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"## sets the input type by checking if the provided images are tensors
 
     if input_type == "Tensor":
-        image_height, image_width = images[0].size()[-2:]## undefined
+        image_height, image_width = images[0].size()[-2:]## if the image is a tensor
     else:
-        image_height, image_width = images[0].shape[0:2]## undefined
+        image_height, image_width = images[0].shape[0:2]## if the image is Numpy 
 
     # Just need to find the top and left coordinates of the image
-    top = random.randint(0, image_height - patch_size)## undefined
-    left = random.randint(0, image_width - patch_size)## undefined
+    top = random.randint(0, image_height - patch_size)## generates a random index for the top coordinate of the image based on the image_height and patch_size
+    left = random.randint(0, image_width - patch_size)## generates a random index for the left coordinate of the image based on the image_height and patch_size
 
     # Crop lr image patch
-    if input_type == "Tensor":## undefined
+    if input_type == "Tensor":## checks if the input_type is a Tensor
         images = [image[## undefined
                   :,## undefined
                   :,## undefined
@@ -198,16 +198,16 @@ def random_crop(
     return images
 
 
-def random_rotate(## undefined
+def random_rotate(## rotate randomly the images
         images: ndarray | Tensor | list[ndarray] | list[Tensor],
-        angles: list,## undefined
-        center: tuple = None,## undefined
+        angles: list,## a list of the angles with which to rotate the image
+        center: tuple = None,## the coordinates of the center of the image
         rotate_scale_factor: float = 1.0## undefined
 ) -> [ndarray] or [Tensor] or [list[ndarray]] or [list[Tensor]]:
     # Random select specific angle
-    angle = random.choice(angles)## undefined
+    angle = random.choice(angles)## select a random angle on the list provided as parameter
 
-    if not isinstance(images, list):## undefined
+    if not isinstance(images, list):## if the images var is not a list -> convert it to a list
         images = [images]
 
     # Detect input image data type
@@ -220,46 +220,46 @@ def random_rotate(## undefined
 
     # Rotate LR image
     if center is None:
-        center = (image_width // 2, image_height // 2)## undefined
+        center = (image_width // 2, image_height // 2)## divide the coordinates of the center by 2
 
-    matrix = cv2.getRotationMatrix2D(center, angle, rotate_scale_factor)## undefined
+    matrix = cv2.getRotationMatrix2D(center, angle, rotate_scale_factor)## creates a rotation matrix with the provided parameters
 
     if input_type == "Tensor":
-        images = [F_vision.rotate(image, angle, center=center) for image in images]## undefined
+        images = [F_vision.rotate(image, angle, center=center) for image in images]## rotates all the images contained in the image list using the corresponding Tensor library
     else:
-        images = [cv2.warpAffine(image, matrix, (image_width, image_height)) for image in images]## undefined
+        images = [cv2.warpAffine(image, matrix, (image_width, image_height)) for image in images]## rotates all the images contained in the image list using the openCV library
 
     # When image number is 1
-    if len(images) == 1:## undefined
-        images = images[0]## undefined
+    if len(images) == 1:## checks if there is only one element in the list
+        images = images[0]## if there is only one element in the list -> just return that element
 
     return images
 
 
-def random_horizontally_flip(## undefined
+def random_horizontally_flip(## defines a function which flips the image horizontally randomly
         images: ndarray | Tensor | list[ndarray] | list[Tensor],
         p: float = 0.5
 ) -> [ndarray] or [Tensor] or [list[ndarray]] or [list[Tensor]]:
     # Get horizontal flip probability
-    flip_prob = random.random()## undefined
+    flip_prob = random.random()## generates the flipping probability
 
-    if not isinstance(images, list):## undefined
-        images = [images]## undefined
+    if not isinstance(images, list):## checks if the images provided is a not list
+        images = [images]## convert the image to a list containing the same image
 
     # Detect input image data type
-    input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"## undefined
+    input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"## sets the input_type based on the input provided
 
     if flip_prob > p:
         if input_type == "Tensor":
-            images = [F_vision.hflip(image) for image in images]## undefined
+            images = [F_vision.hflip(image) for image in images]## flips all the images inside the list using the F_vision because image is a tensor
         else:
-            images = [cv2.flip(image, 1) for image in images]## undefined
+            images = [cv2.flip(image, 1) for image in images]## flips all the images inside the list using the openCV libary beacause the image is a ndarray of pixels
 
     # When image number is 1
-    if len(images) == 1:## undefined
-        images = images[0]## undefined
+    if len(images) == 1:## checks if there is only one element in the list
+        images = images[0]## converts the list containing the image to the image itself
 
-    return images## undefined
+    return images## returns the flipped images/image
 
 
 def random_vertically_flip(
@@ -267,22 +267,23 @@ def random_vertically_flip(
         p: float = 0.5
 ) -> [ndarray] or [Tensor] or [list[ndarray]] or [list[Tensor]]:
     # Get vertical flip probability
-    flip_prob = random.random()## undefined
+    flip_prob = random.random()## generates a random float number between 0 and 1
 
-    if not isinstance(images, list):## undefined
-        images = [images]## undefined
+    if not isinstance(images, list):## checks if the type of the images provided is a not list
+        images = [images]## convert the image to a list containing the same image
 
     # Detect input image data type
     input_type = "Tensor" if torch.is_tensor(images[0]) else "Numpy"
 
     if flip_prob > p:
         if input_type == "Tensor":
-            images = [F_vision.vflip(image) for image in images]## undefined
+            images = [F_vision.vflip(image) for image in images]## flips all the images inside the list using the F_vision because image is a tensor
         else:
-            images = [cv2.flip(image, 0) for image in images]## undefined
+            images = [cv2.flip(image, 0) for image in images]## flips all the images inside the list using the openCV libary beacause the image is a ndarray of pixels
+
 
     # When image number is 1
-    if len(images) == 1:## undefined
-        images = images[0]## undefined
+    if len(images) == 1:## checks if there is only one element in the list
+        images = images[0]## converts the list containing the image to the image itself
 
     return images
