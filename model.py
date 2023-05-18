@@ -13,9 +13,9 @@
 # ==============================================================================
 from typing import cast, Dict, List, Union ## undefined
 
-import torch ## undefined
-from torch import Tensor ## undefined
-from torch import nn ## undefined
+import torch ## import the torch module
+from torch import Tensor ## import the tensor from torch
+from torch import nn ## import the nn module from torh for neural network components
 
 __all__ = [
     "VGG",
@@ -24,7 +24,7 @@ __all__ = [
 ]
 
 vgg_cfgs: Dict[str, List[Union[str, int]]] = {
-    "vgg11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"], ## undefined
+    "vgg11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"], ## defines the different configurations of the model
     "vgg13": [64, 64, "M", 128, 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"],
     "vgg16": [64, 64, "M", 128, 128, "M", 256, 256, 256, "M", 512, 512, 512, "M", 512, 512, 512, "M"],
     "vgg19": [64, 64, "M", 128, 128, "M", 256, 256, 256, 256, "M", 512, 512, 512, 512, "M", 512, 512, 512, 512, "M"],
@@ -32,21 +32,21 @@ vgg_cfgs: Dict[str, List[Union[str, int]]] = {
 
 
 def _make_layers(vgg_cfg: List[Union[str, int]], batch_norm: bool = False) -> nn.Sequential: ## undefined
-    layers: nn.Sequential[nn.Module] = nn.Sequential() ## undefined
-    in_channels = 3 ## undefined
-    for v in vgg_cfg: ## undefined
-        if v == "M": ## undefined
-            layers.append(nn.MaxPool2d((2, 2), (2, 2))) ## undefined
-        else: ## undefined
-            v = cast(int, v) ## undefined
-            conv2d = nn.Conv2d(in_channels, v, (3, 3), (1, 1), (1, 1)) ## undefined
-            if batch_norm: ## undefined
-                layers.append(conv2d) ## undefined
-                layers.append(nn.BatchNorm2d(v)) ## undefined
-                layers.append(nn.ReLU(True)) ## undefined
-            else: ## undefined
-                layers.append(conv2d) ## undefined
-                layers.append(nn.ReLU(True)) ## undefined
+    layers: nn.Sequential[nn.Module] = nn.Sequential() ## create a sequential container for the layers
+    in_channels = 3 ## 1 channel for each value in RGB
+    for v in vgg_cfg: ## iterates through all layers in the configuration
+        if v == "M": ## checks if the current layer is a max pooling layer
+            layers.append(nn.MaxPool2d((2, 2), (2, 2))) ## add a max pooling layer
+        else: ## convolutional layer
+            v = cast(int, v) ## cast v to an integer
+            conv2d = nn.Conv2d(in_channels, v, (3, 3), (1, 1), (1, 1)) ## creates a convolutional layer with v channels
+            if batch_norm: ## check if batch normalization is used
+                layers.append(conv2d) ## add the convolutional layer to the stack
+                layers.append(nn.BatchNorm2d(v)) ## add the batch normalization layer
+                layers.append(nn.ReLU(True)) ## add the ReLU layer to the stack
+            else: ## no batch normalization
+                layers.append(conv2d) ## add the convolutional layer to the stack
+                layers.append(nn.ReLU(True)) ## add the ReLU layer to the stack
             in_channels = v
 
     return layers
@@ -60,13 +60,13 @@ class VGG(nn.Module): ## undefined
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7)) ## undefined
 
         self.classifier = nn.Sequential( ## undefined
-            nn.Linear(512 * 7 * 7, 4096), ## undefined
-            nn.ReLU(True), ## undefined
-            nn.Dropout(0.5), ## undefined
-            nn.Linear(4096, 4096), ## undefined
-            nn.ReLU(True), ## undefined
-            nn.Dropout(0.5), ## undefined
-            nn.Linear(4096, num_classes), ## undefined
+            nn.Linear(512 * 7 * 7, 4096), ## fully connected layers
+            nn.ReLU(True), ## ReLU function
+            nn.Dropout(0.5), ## dropout regularization
+            nn.Linear(4096, 4096), ## fully connected layer
+            nn.ReLU(True), ## ReLU function
+            nn.Dropout(0.5), ## dropout regularization
+            nn.Linear(4096, num_classes), ## fully connected layer
         )
 
         # Initialize neural network weights
@@ -85,21 +85,21 @@ class VGG(nn.Module): ## undefined
         return out
 
     def _initialize_weights(self) -> None:
-        for module in self.modules(): ## undefined
-            if isinstance(module, nn.Conv2d): ## undefined
+        for module in self.modules(): ## iterates through all layers in the model
+            if isinstance(module, nn.Conv2d): ## convolutional layer
                 nn.init.kaiming_normal_(module.weight, mode="fan_out", nonlinearity="relu") ## undefined
                 if module.bias is not None:
                     nn.init.constant_(module.bias, 0) ## undefined
-            elif isinstance(module, nn.BatchNorm2d): ## undefined
+            elif isinstance(module, nn.BatchNorm2d): ## batch normalization layer
                 nn.init.constant_(module.weight, 1) ## undefined
                 nn.init.constant_(module.bias, 0) ## undefined
-            elif isinstance(module, nn.Linear): ## undefined
+            elif isinstance(module, nn.Linear): ## fully connected layer
                 nn.init.normal_(module.weight, 0, 0.01) ## undefined
                 nn.init.constant_(module.bias, 0) ## undefined
 
 
 def vgg11(**kwargs) -> VGG:
-    model = VGG(vgg_cfgs["vgg11"], False, **kwargs) ## undefined
+    model = VGG(vgg_cfgs["vgg11"], False, **kwargs) ## initilizes a model with depth 11
 
     return model
 

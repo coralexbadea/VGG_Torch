@@ -11,11 +11,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-import json ## undefined
-import os ## undefined
-import shutil ## undefined
-from enum import Enum ## undefined
-from typing import Optional ## undefined
+import json ## import json module -> work with json data
+import os ## import os module -> interacting with the operating system
+import shutil ## import te shuti module -> high-level file operations
+from enum import Enum ## import Enum class -> base class to create enumerating objects
+from typing import Optional ## import Optional -> used to define optional types
 
 import torch
 from torch import nn, optim
@@ -134,7 +134,7 @@ def save_checkpoint( ## undefined
         shutil.copyfile(checkpoint_path, os.path.join(results_dir, last_file_name))
 
 
-class Summary(Enum): ## undefined
+class Summary(Enum): ## defines an enumeration class
     NONE = 0 ## undefined
     AVERAGE = 1 ## undefined
     SUM = 2 ## undefined

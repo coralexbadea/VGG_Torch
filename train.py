@@ -11,19 +11,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-import os ## undefined
-import random ## undefined
-import time ## undefined
+import os ## import the os module -> interacting with the operating system
+import random ## import the random module -> generate random numbers and perform random operations
+import time ## import the time module -> work with time related tasks
 
-import numpy as np ## undefined
-import torch ## undefined
-from torch import nn ## undefined
-from torch import optim ## undefined
-from torch.backends import cudnn ## undefined
+import numpy as np ## import the numpy module -> numerical computing
+import torch ## import the torch module
+from torch import nn ## import the nn module from torch -> neural network related classes and functions
+from torch import optim ## import the optim module from torch -> optimization algorithms
+from torch.backends import cudnn ## import cudnn module -> accelerated neural network operations on CUDA
 from torch.cuda import amp ## undefined
 from torch.optim import lr_scheduler ## undefined
 from torch.optim.swa_utils import AveragedModel ## undefined
-from torch.utils.data import DataLoader ## undefined
+from torch.utils.data import DataLoader ## import the DataLoader class used for loading data
 from torch.utils.tensorboard import SummaryWriter ## undefined
 
 import model
