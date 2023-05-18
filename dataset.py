@@ -11,10 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-import queue ## includes the python's build-in queue module
+import queue ## includes the python's build-in queue module -> used to implement data safe queues
 import sys ## includes the python's build-in sys module
-import threading ## includes the python's build-in sys module
-from glob import glob ## includes the glob function from the glob module
+import threading ## includes the python's build-in sys module -> used for creating and managing threads
+from glob import glob ## includes the glob function from the glob module -> used for finding files
 
 import cv2 ## includes the opencv package
 import torch ## includes the toch library -> framework for building deep learning models
