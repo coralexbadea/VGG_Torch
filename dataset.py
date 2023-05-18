@@ -16,13 +16,13 @@ import sys ## includes the python's build-in sys module
 import threading ## includes the python's build-in sys module -> used for creating and managing threads
 from glob import glob ## includes the glob function from the glob module -> used for finding files
 
-import cv2 ## includes the opencv package
+import cv2 ## includes the opencv package -> computer vision and image processing
 import torch ## includes the toch library -> framework for building deep learning models
-from PIL import Image ## includes the Image class from the Python Imaging Library -> adds image processing capabilities
-from torch.utils.data import Dataset, DataLoader ## includes the Dataset and Dataloader classes from torch
+from PIL import Image ## includes the Image class from the Python Imaging Library -> adds image managing and processing capabilities
+from torch.utils.data import Dataset, DataLoader ## includes the Dataset and Dataloader classes from torch -> used for handling datasets and data loaders
 from torchvision import transforms ## includes the transforms module from torch -> common image transforms
 from torchvision.datasets.folder import find_classes ## includes the find_classes function from torch -> Finds the class folders in a dataset
-from torchvision.transforms import TrivialAugmentWide ## includes the TrivialAugmentWide class from torch
+from torchvision.transforms import TrivialAugmentWide ## includes the TrivialAugmentWide class from torch -> used performing data augmentation during training
 
 from imgproc import image_to_tensor 
 
@@ -107,7 +107,7 @@ class ImageDataset(Dataset): ## define a class dataset for images being a child 
             image = cv2.imread(self.images_file_path[batch_index]) ## use the OpenCV library to load the image
             target = self.class_to_idx[images_dir] ## undefined
         else:
-            raise ValueError(f"Unsupported image extensions, Only support `{IMG_EXTENSIONS}`, " ## undefined
+            raise ValueError(f"Unsupported image extensions, Only support `{IMG_EXTENSIONS}`, " ## raises an error if the an unknown extension was provided
                              "please check the image file extensions.")
 
         # BGR to RGB
