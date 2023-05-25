@@ -185,13 +185,13 @@ class CPUPrefetcher:
         dataloader (DataLoader): Data loader. Combines a dataset and a sampler, and provides an iterable over the given dataset.
     """
 
-    def __init__(self, dataloader) -> None: ## undefined
-        self.original_dataloader = dataloader ## undefined
-        self.data = iter(dataloader) ## undefined
+    def __init__(self, dataloader) -> None: ## the initializer function for the CPUPrefetcher class
+        self.original_dataloader = dataloader ## original_dataloader is initialized with the dataloader passed as a parameter
+        self.data = iter(dataloader) ## the data is initialized to an iterator that iterates over the data in the dataloader
 
-    def next(self): ## undefined
+    def next(self): ## method for returning the next item from the iterator
         try:
-            return next(self.data) ## undefined
+            return next(self.data) ## returns the next item from the iterator
         except StopIteration:
             return None
 
@@ -202,7 +202,7 @@ class CPUPrefetcher:
         return len(self.original_dataloader) ## returns the nr of items 
 
 
-class CUDAPrefetcher: ## undefined
+class CUDAPrefetcher: ## prefetcher class for improved performance
     """Use the CUDA side to accelerate data reading.
 
     Args:
@@ -210,36 +210,36 @@ class CUDAPrefetcher: ## undefined
         device (torch.device): Specify running device.
     """
 
-    def __init__(self, dataloader, device: torch.device): ## undefined
-        self.batch_data = None ## undefined
-        self.original_dataloader = dataloader ## undefined
-        self.device = device ## undefined
+    def __init__(self, dataloader, device: torch.device): ## initializer function for this class
+        self.batch_data = None ## batch data initialised to empty
+        self.original_dataloader = dataloader ## original_dataloader is initialized to the dataloader in the parameter
+        self.device = device ## device parameter of the class is initialized to the passed device parameter
 
-        self.data = iter(dataloader) ## undefined
-        self.stream = torch.cuda.Stream() ## undefined
-        self.preload() ## undefined
+        self.data = iter(dataloader) ## data is initialized to an iterator with the passed data
+        self.stream = torch.cuda.Stream() ## stream is initilalized to an empty stream of type cuda
+        self.preload() ## data is preloaded using the function defined below
 
-    def preload(self): ## undefined
+    def preload(self): ## function for preloading data
         try:
-            self.batch_data = next(self.data) ## undefined
-        except StopIteration: ## undefined
-            self.batch_data = None ## undefined
+            self.batch_data = next(self.data) ## get next chunk of data
+        except StopIteration: ## if data is finished
+            self.batch_data = None ## set data to none since there is no more data
             return None
 
-        with torch.cuda.stream(self.stream): ## undefined
-            for k, v in self.batch_data.items(): ## undefined
-                if torch.is_tensor(v): ## undefined
-                    self.batch_data[k] = self.batch_data[k].to(self.device, non_blocking=True) ## undefined
+        with torch.cuda.stream(self.stream): ## sets a stream of type CUDA
+            for k, v in self.batch_data.items(): ## iterates over the items in batch_data
+                if torch.is_tensor(v): ## if v is tensor
+                    self.batch_data[k] = self.batch_data[k].to(self.device, non_blocking=True) ## moves tensor to specified device
 
-    def next(self): ## undefined
-        torch.cuda.current_stream().wait_stream(self.stream) ## undefined
-        batch_data = self.batch_data ## undefined
-        self.preload() ## undefined
+    def next(self): ## function for getting  next batch of data
+        torch.cuda.current_stream().wait_stream(self.stream) ## waits for the current stream to finish
+        batch_data = self.batch_data ## assigns the current batch data to the variable
+        self.preload() ## preloads the next batch
         return batch_data
 
-    def reset(self): ## undefined
-        self.data = iter(self.original_dataloader) ## undefined
-        self.preload() ## undefined
+    def reset(self): ## resets the stream to the beginning
+        self.data = iter(self.original_dataloader) ## creates a new iterator from the original data loader
+        self.preload() ## loads the data
 
     def __len__(self) -> int:
         return len(self.original_dataloader)
