@@ -166,8 +166,8 @@ class PrefetchDataLoader(DataLoader): ## prefetch data loader to load the data f
     """A fast data prefetch dataloader.
 
     Args:
-        num_data_prefetch_queue (int): How many early data load queues. ## undefined
-        kwargs (dict): Other extended parameters. ## undefined
+        num_data_prefetch_queue (int): How many early data load queues. ## how many queues for pre loading
+        kwargs (dict): Other extended parameters. ## the rest of the parameters
     """
 
     def __init__(self, num_data_prefetch_queue: int, **kwargs) -> None:

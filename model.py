@@ -13,9 +13,9 @@
 # ==============================================================================
 from typing import cast, Dict, List, Union ## undefined
 
-import torch ## undefined
-from torch import Tensor ## undefined
-from torch import nn ## undefined
+import torch ## imports pytorch library
+from torch import Tensor ## import library for tensors
+from torch import nn ## import library for neural networks
 
 __all__ = [
     "VGG",
